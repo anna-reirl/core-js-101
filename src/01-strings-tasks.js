@@ -110,8 +110,8 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString(/* value, count */) {
-  throw new Error('Not implemented');
+function repeatString(value, count) {
+  return value.repeat(count);
 }
 
 /**
@@ -126,8 +126,8 @@ function repeatString(/* value, count */) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  return str.replace(value, '');
 }
 
 /**
@@ -175,8 +175,8 @@ function convertToUpperCase(str) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -224,20 +224,25 @@ function getRectangleString(/* width, height */) {
  *
  */
 function encodeToRot13(str) {
-  const codeA = 'A'.charCodeAt(0);
-  const codeN = 'N'.charCodeAt(0);
-  const codeZ = 'Z'.charCodeAt(0);
-  const newArr = [];
-  for (let i = 0; i < str.length; i += 1) {
-    const code = str.charCodeAt(i);
-    if (code >= codeA && code <= codeZ) {
-      if (code >= codeN) newArr.push(String.fromCharCode(code - 13));
-      else newArr.push(String.fromCharCode(code + 13));
-    } else {
-      newArr.push(str[i]);
-    }
-  }
-  return newArr.join('');
+  const aCharCode = 'a'.charCodeAt(0);
+  const zCharCode = 'z'.charCodeAt(0);
+  const ACharCode = 'A'.charCodeAt(0);
+  const ZCharCode = 'Z'.charCodeAt(0);
+
+  return str
+    .split('')
+    .map((x, idx) => {
+      let charCode = str.charCodeAt(idx);
+      if (charCode >= aCharCode && charCode <= zCharCode) {
+        charCode += 13;
+        if (charCode > zCharCode) charCode -= 26;
+      } else if (charCode >= ACharCode && charCode <= ZCharCode) {
+        charCode += 13;
+        if (charCode > ZCharCode) charCode -= 26;
+      }
+      return String.fromCharCode(charCode);
+    })
+    .join('');
 }
 
 
@@ -254,8 +259,12 @@ function encodeToRot13(str) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return (
+    value !== null
+    && value !== undefined
+    && (value.toString() === value || (value instanceof String))
+  );
 }
 
 
@@ -283,8 +292,68 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const card = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  let res;
+  card.forEach((val, index) => {
+    if (val === value) {
+      res = index;
+    }
+  });
+  return res;
 }
 
 
